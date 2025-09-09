@@ -2,13 +2,13 @@ import React from 'react';
 
 export const Header: React.FC = () => {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 to-purple-700 shadow-lg py-2 px-4">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 to-purple-700 shadow-lg py-1 px-4">
       <div className="flex items-center justify-center space-x-3">
         {/* Company logo */}
         <img 
           src="/RocketHub Logo Alt 1 Small.png" 
           alt="RocketHub Logo" 
-          className="w-16 h-16 md:w-20 md:h-20 object-contain"
+          className="w-20 h-20 md:w-24 md:h-24 object-contain"
         />
         
         {/* Title and rocket emoji */}
