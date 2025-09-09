@@ -3,9 +3,9 @@ import React from 'react';
 export const Header: React.FC = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 to-purple-700 shadow-lg">
-      <div className="flex flex-col items-center justify-center py-3 px-4 md:py-6 md:px-6">
+      <div className="flex flex-col items-center justify-center py-2 px-4 md:py-3 md:px-6">
         {/* Title and rocket emoji */}
-        <div className="flex items-center space-x-2 md:space-x-3 mb-2 md:mb-3">
+        <div className="flex items-center space-x-2 md:space-x-3 mb-1 md:mb-2">
           <span className="text-2xl md:text-3xl">🚀</span>
           <h1 className="text-lg md:text-2xl font-bold text-white tracking-tight">
             Astra Intelligence
