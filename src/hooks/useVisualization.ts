@@ -22,7 +22,11 @@ export const useVisualization = () => {
     }));
 
     try {
-      const response = await fetch('/.netlify/functions/generate-visualization', {
+      const apiUrl = import.meta.env.DEV 
+        ? '/api/generate-visualization' 
+        : '/.netlify/functions/generate-visualization';
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
