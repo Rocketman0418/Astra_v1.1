@@ -153,9 +153,11 @@ Create a visualization that would impress executives and stakeholders with its p
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ 
-        error: `Failed to generate visualization: ${error.message}`,
+        error: \`Failed to generate visualization: ${error.message}`,
         content: '<div style="padding: 20px; text-align: center; color: #ef4444;">Failed to generate visualization. Please try again.</div>'
       })
     };
   }
 };
+  }
+}
