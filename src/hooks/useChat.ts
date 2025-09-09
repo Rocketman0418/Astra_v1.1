@@ -9,7 +9,8 @@ export const useChat = () => {
       id: 'welcome',
       text: "Welcome, I'm Astra. What can I help you with today?",
       isUser: false,
-      timestamp: new Date()
+      timestamp: new Date(),
+      isCentered: true
     }
   ]);
   const [isLoading, setIsLoading] = useState(false);

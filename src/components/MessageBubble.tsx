@@ -88,6 +88,34 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
     ? lines.slice(0, 5).join('\n') + '...'
     : displayText;
 
+  // Special styling for centered welcome message
+  if (message.isCentered) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <div className="flex justify-start">
+          <div className="flex-shrink-0 mr-2 md:mr-3">
+            <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-sm md:text-lg">
+              🚀
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-gray-700 to-gray-800 text-white rounded-2xl px-3 py-2 md:px-4 md:py-3 shadow-sm max-w-[280px] sm:max-w-md lg:max-w-lg xl:max-w-xl">
+            <div className="break-words text-sm md:text-sm leading-relaxed">
+              <div className="whitespace-pre-wrap text-gray-300">{finalText}</div>
+            </div>
+            
+            <div className="text-xs opacity-70 mt-1 md:mt-2">
+              {message.timestamp.toLocaleTimeString([], { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`flex mb-3 md:mb-4 ${message.isUser ? 'justify-end' : 'justify-start'}`}>
       {!message.isUser && (

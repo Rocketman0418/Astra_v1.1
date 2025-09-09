@@ -5,6 +5,7 @@ export interface Message {
   timestamp: Date;
   isExpanded?: boolean;
   visualization?: string;
+  isCentered?: boolean;
 }
 
 export interface VisualizationState {
