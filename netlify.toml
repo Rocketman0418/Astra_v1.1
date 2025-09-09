@@ -2,9 +2,3 @@
   functions = "netlify/functions"
 
 [functions]
-  # Extend timeout to maximum allowed (26 seconds for paid plans, 10 for free)
-  timeout = 26
-
-[[functions]]
-  name = "generate-visualization"
-  timeout = 26
