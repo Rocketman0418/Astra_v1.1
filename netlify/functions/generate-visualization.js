@@ -58,7 +58,7 @@ exports.handler = async (event, context) => {
       };
     }
 
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
     console.log('Making request to Gemini API...');
 
     const prompt = `Create a sophisticated, interactive HTML data visualization based on the following text. 
@@ -97,28 +97,53 @@ ${messageText}
 Create a visualization that would impress executives and stakeholders with its professional appearance and interactivity.`;
 
     console.log('Sending request to Gemini...');
-    const response = await fetch(GEMINI_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: prompt
-          }]
-        }]
-      })
-    });
+    
+    // Create AbortController for timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 25000);
+    
+    let response;
+    try {
+      response = await fetch(GEMINI_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: prompt
+            }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 8192,
+          }
+        }),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+    } catch (error) {
+      clearTimeout(timeoutId);
+      if (error.name === 'AbortError') {
+        console.error('Request timed out after 25 seconds');
+        throw new Error('Request timed out');
+      }
+      throw error;
+    }
 
     console.log('Gemini API response status:', response.status);
     
     if (!response.ok) {
-      console.error('Gemini API error:', response.status, response.statusText, await response.text());
+      const errorText = await response.text();
+      console.error('Gemini API error:', response.status, response.statusText, errorText);
       throw new Error('Failed to generate visualization');
     }
 
     const data = await response.json();
+    console.log('Gemini API response received, candidates:', data.candidates?.length);
     const visualizationContent = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No visualization could be generated.';
 
     console.log('Successfully generated visualization, length:', visualizationContent.length);
