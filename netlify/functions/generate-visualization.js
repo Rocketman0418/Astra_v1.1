@@ -95,7 +95,7 @@ The output should be a complete, self-contained HTML file that can be opened dir
             temperature: 0.7,
             topK: 40,
             topP: 1,
-            maxOutputTokens: 4096, // Reduce to speed up generation
+            maxOutputTokens: 8192,
           }
         }),
         signal: controller.signal
@@ -121,6 +121,22 @@ The output should be a complete, self-contained HTML file that can be opened dir
     const data = await response.json();
     console.log('Gemini API response received, candidates:', data.candidates?.length);
     console.log('Full Gemini response:', JSON.stringify(data, null, 2));
+    
+    // Check if response was truncated due to token limits
+    if (data.candidates?.[0]?.finishReason === 'MAX_TOKENS') {
+      console.log('Response was truncated due to MAX_TOKENS');
+      return {
+        statusCode: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          error: 'Response was truncated. Please try with a shorter message.',
+          content: '<div style="padding: 20px; text-align: center; color: #ef4444;">Response was too long and was truncated. Please try with a shorter message.</div>'
+        })
+      };
+    }
     
     const visualizationContent = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No visualization could be generated.';
     console.log('Extracted content:', visualizationContent);
