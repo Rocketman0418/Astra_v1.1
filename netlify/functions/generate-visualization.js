@@ -95,7 +95,7 @@ The output should be a complete, self-contained HTML file that can be opened dir
             temperature: 0.7,
             topK: 40,
             topP: 1,
-            maxOutputTokens: 8192,
+            maxOutputTokens: 16384,
           }
         }),
         signal: controller.signal
