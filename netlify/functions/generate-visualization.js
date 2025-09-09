@@ -69,20 +69,16 @@ Requirements:
 - Create a complete HTML page with <!DOCTYPE html>, <html>, <head>, and <body> tags
 - Include all CSS inline in <style> tags within the <head>
 - Include all JavaScript inline in <script> tags
-- Use modern, responsive design with a clean, professional appearance
+- Use modern, responsive design with clean styling
 - Choose the most appropriate visualization type (charts, graphs, tables, etc.) based on the data
 - Use libraries like Chart.js, D3.js, or create custom visualizations as appropriate
-- Include proper titles, labels, and legends
-- Make it interactive where possible (hover effects, clickable elements, etc.)
-- Use a modern color scheme and typography
-- Ensure the visualization is mobile-friendly
-- If the data contains time series, use appropriate time-based charts
-- If the data is categorical, use bar charts, pie charts, or similar
-- If the data is numerical/statistical, consider histograms, scatter plots, or box plots
-- Include brief explanatory text about what the visualization shows
-- Handle edge cases gracefully (empty data, invalid formats, etc.)
+- Include proper labels, legends, and titles
+- Make it interactive where possible
+- Use a professional color scheme
+- Ensure the visualization is clear and easy to understand
+- If the data is not suitable for visualization, create an informative display instead
 
-The output should be a complete, self-contained HTML file that can be opened in any modern web browser.`;
+The output should be a complete, self-contained HTML file that can be opened directly in a browser.`;
 
     console.log('Sending request to Gemini...');
     
