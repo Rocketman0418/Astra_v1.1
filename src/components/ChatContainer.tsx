@@ -3,9 +3,7 @@ import { Header } from './Header';
 import { MessageBubble } from './MessageBubble';
 import { LoadingIndicator } from './LoadingIndicator';
 import { ChatInput } from './ChatInput';
-import { VisualizationView } from './VisualizationView';
 import { useChat } from '../hooks/useChat';
-import { useVisualization } from '../hooks/useVisualization';
 
 export const ChatContainer: React.FC = () => {
   const {
@@ -17,14 +15,6 @@ export const ChatContainer: React.FC = () => {
     toggleMessageExpansion,
     messagesEndRef
   } = useChat();
-
-  const {
-    generateVisualization,
-    showVisualization,
-    hideVisualization,
-    getVisualization,
-    currentVisualization
-  } = useVisualization();
 
   // Register service worker for PWA
   useEffect(() => {
@@ -54,19 +44,6 @@ export const ChatContainer: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, [messagesEndRef]);
 
-  const currentVisualizationData = currentVisualization 
-    ? getVisualization(currentVisualization)
-    : null;
-
-  if (currentVisualization && currentVisualizationData?.content) {
-    return (
-      <VisualizationView
-        content={currentVisualizationData.content}
-        onBack={hideVisualization}
-      />
-    );
-  }
-
   return (
     <div className="flex flex-col h-screen bg-gray-900">
       <Header />
@@ -78,9 +55,6 @@ export const ChatContainer: React.FC = () => {
               key={message.id}
               message={message}
               onToggleExpansion={toggleMessageExpansion}
-              onCreateVisualization={generateVisualization}
-              onViewVisualization={showVisualization}
-              visualizationState={getVisualization(message.id)}
             />
           ))}
           

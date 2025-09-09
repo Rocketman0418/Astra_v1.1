@@ -1,6 +1,5 @@
 import React from 'react';
 import { Message } from '../types';
-import { VisualizationButton } from './VisualizationButton';
 
 const formatMessageText = (text: string): JSX.Element => {
   // Split text into lines and process each line
@@ -71,17 +70,11 @@ const formatMessageText = (text: string): JSX.Element => {
 interface MessageBubbleProps {
   message: Message;
   onToggleExpansion: (messageId: string) => void;
-  onCreateVisualization: (messageId: string, messageText: string) => void;
-  onViewVisualization: (messageId: string) => void;
-  visualizationState: any;
 }
 
 export const MessageBubble: React.FC<MessageBubbleProps> = ({
   message,
-  onToggleExpansion,
-  onCreateVisualization,
-  onViewVisualization,
-  visualizationState
+  onToggleExpansion
 }) => {
   const isLongMessage = message.text.length > 300;
   const shouldTruncate = isLongMessage && !message.isExpanded;
@@ -125,18 +118,6 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
           >
             {message.isExpanded ? 'Show Less' : 'Show More'}
           </button>
-        )}
-
-        {!message.isUser && message.id !== 'welcome' && (
-          <div className="mt-3">
-            <VisualizationButton
-              messageId={message.id}
-              messageText={message.text}
-              onCreateVisualization={onCreateVisualization}
-              onViewVisualization={onViewVisualization}
-              visualizationState={visualizationState}
-            />
-          </div>
         )}
 
         <div className="text-xs opacity-70 mt-2">
