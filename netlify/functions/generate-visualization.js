@@ -120,7 +120,11 @@ The output should be a complete, self-contained HTML file that can be opened dir
 
     const data = await response.json();
     console.log('Gemini API response received, candidates:', data.candidates?.length);
+    console.log('Full Gemini response:', JSON.stringify(data, null, 2));
+    
     const visualizationContent = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No visualization could be generated.';
+    console.log('Extracted content:', visualizationContent);
+    console.log('Content length:', visualizationContent.length);
 
     console.log('Successfully generated visualization, length:', visualizationContent.length);
     
