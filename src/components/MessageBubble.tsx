@@ -89,21 +89,21 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
     : displayText;
 
   return (
-    <div className={`flex mb-4 ${message.isUser ? 'justify-end' : 'justify-start'}`}>
+    <div className={`flex mb-3 md:mb-4 ${message.isUser ? 'justify-end' : 'justify-start'}`}>
       {!message.isUser && (
-        <div className="flex-shrink-0 mr-3 mt-1">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-lg">
+        <div className="flex-shrink-0 mr-2 md:mr-3 mt-1">
+          <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-sm md:text-lg">
             🚀
           </div>
         </div>
       )}
       
-      <div className={`max-w-xs sm:max-w-md lg:max-w-lg xl:max-w-xl rounded-2xl px-4 py-3 shadow-sm ${
+      <div className={`max-w-[280px] sm:max-w-md lg:max-w-lg xl:max-w-xl rounded-2xl px-3 py-2 md:px-4 md:py-3 shadow-sm ${
         message.isUser
           ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white'
           : 'bg-gradient-to-br from-gray-700 to-gray-800 text-white'
       }`}>
-        <div className="break-words text-sm leading-relaxed">
+        <div className="break-words text-sm md:text-sm leading-relaxed">
           {message.isUser ? (
             <div className="whitespace-pre-wrap">{finalText}</div>
           ) : (
@@ -114,13 +114,13 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
         {(isLongMessage || shouldShowMore) && (
           <button
             onClick={() => onToggleExpansion(message.id)}
-            className="text-xs underline mt-2 opacity-90 hover:opacity-100 transition-opacity"
+            className="text-xs underline mt-1 md:mt-2 opacity-90 hover:opacity-100 transition-opacity"
           >
             {message.isExpanded ? 'Show Less' : 'Show More'}
           </button>
         )}
 
-        <div className="text-xs opacity-70 mt-2">
+        <div className="text-xs opacity-70 mt-1 md:mt-2">
           {message.timestamp.toLocaleTimeString([], { 
             hour: '2-digit', 
             minute: '2-digit' 
