@@ -44,9 +44,13 @@ exports.handler = async (event, context) => {
     }
 
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    
+    // For local development through Vite proxy, check headers
+    const apiKey = GEMINI_API_KEY || event.headers['x-gemini-api-key'];
+    
     console.log('API key exists:', !!GEMINI_API_KEY);
     
-    if (!GEMINI_API_KEY) {
+    if (!apiKey) {
       console.log('Gemini API key not found in environment');
       return {
         statusCode: 500,
@@ -58,7 +62,7 @@ exports.handler = async (event, context) => {
       };
     }
 
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
     console.log('Making request to Gemini API...');
 
     const prompt = `You are a data visualization expert. Create a complete, working HTML page with inline CSS and JavaScript that visualizes the following data.
