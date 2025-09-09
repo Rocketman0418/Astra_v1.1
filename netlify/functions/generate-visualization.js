@@ -100,7 +100,7 @@ Create a visualization that would impress executives and stakeholders with its p
     
     // Create AbortController for timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 25000);
+    const timeoutId = setTimeout(() => controller.abort(), 23000); // 23 seconds to stay under Netlify's 26s limit
     
     let response;
     try {
@@ -119,7 +119,7 @@ Create a visualization that would impress executives and stakeholders with its p
             temperature: 0.7,
             topK: 40,
             topP: 1,
-            maxOutputTokens: 8192,
+            maxOutputTokens: 4096, // Reduce to speed up generation
           }
         }),
         signal: controller.signal

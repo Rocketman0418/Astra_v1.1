@@ -6,6 +6,11 @@ export const useVisualization = () => {
   const [currentVisualization, setCurrentVisualization] = useState<string | null>(null);
 
   const generateVisualization = useCallback(async (messageId: string, messageText: string) => {
+    // Truncate very long messages to speed up processing
+    const truncatedText = messageText.length > 1000 
+      ? messageText.substring(0, 1000) + '...'
+      : messageText;
+
     setVisualizations(prev => ({
       ...prev,
       [messageId]: {
@@ -22,7 +27,7 @@ export const useVisualization = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ messageText })
+        body: JSON.stringify({ messageText: truncatedText })
       });
 
       if (!response.ok) {
