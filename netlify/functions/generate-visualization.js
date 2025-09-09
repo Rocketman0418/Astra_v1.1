@@ -77,24 +77,11 @@ DESIGN REQUIREMENTS:
 VISUALIZATION REQUIREMENTS:
 - Create dynamic, interactive charts using modern CSS and JavaScript
 - Include hover effects, animations, and micro-interactions
-- Use gradients from blue to purple for primary elements
-- Implement responsive design that works on all screen sizes
-- Add smooth transitions and professional styling
-- Include data labels, legends, and clear visual hierarchy
-- Use modern CSS features like flexbox, grid, and custom properties
-- Make it visually striking and dashboard-quality
-
-TECHNICAL REQUIREMENTS:
 - Return ONLY clean HTML with inline CSS and JavaScript
-- No external dependencies or libraries
-- Use semantic HTML structure
-- Ensure accessibility with proper ARIA labels
-- Optimize for performance and smooth animations
-
-DATA TO VISUALIZE:
 ${messageText}
 
 Create a visualization that would impress executives and stakeholders with its professional appearance and interactivity.`;
+    const prompt = `You are a data visualization expert. Create a complete, working HTML page with inline CSS and JavaScript that visualizes the following data.
 
     console.log('Sending request to Gemini...');
     
