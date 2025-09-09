@@ -19,7 +19,6 @@ export default defineConfig(({ mode }) => {
               const apiKey = env.VITE_GEMINI_API_KEY || env.GEMINI_API_KEY;
               if (apiKey) {
                 proxyReq.setHeader('x-gemini-api-key', apiKey);
-              proxyReq.setHeader('x-gemini-api-key', env.VITE_GEMINI_API_KEY);
             }
           });
         }
