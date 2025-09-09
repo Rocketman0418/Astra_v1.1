@@ -39,7 +39,19 @@ exports.handler = async (event, context) => {
       };
     }
 
-    const GEMINI_API_KEY = process.env.VITE_GEMINI_API_KEY;
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    
+    if (!GEMINI_API_KEY) {
+      return {
+        statusCode: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ error: 'Gemini API key not configured' })
+      };
+    }
+
     const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     const prompt = `Create a sophisticated, interactive HTML data visualization based on the following text. 
@@ -82,6 +94,7 @@ Create a visualization that would impress executives and stakeholders with its p
       headers: {
         'Content-Type': 'application/json',
       },
+      timeout: 25000, // 25 second timeout
       body: JSON.stringify({
         contents: [{
           parts: [{
@@ -92,6 +105,7 @@ Create a visualization that would impress executives and stakeholders with its p
     });
 
     if (!response.ok) {
+      console.error('Gemini API error:', response.status, response.statusText);
       throw new Error('Failed to generate visualization');
     }
 
@@ -108,7 +122,7 @@ Create a visualization that would impress executives and stakeholders with its p
     };
 
   } catch (error) {
-    console.error('Error generating visualization:', error);
+    console.error('Error generating visualization:', error.message, error.stack);
     return {
       statusCode: 500,
       headers: {
@@ -116,7 +130,7 @@ Create a visualization that would impress executives and stakeholders with its p
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ 
-        error: 'Failed to generate visualization',
+        error: `Failed to generate visualization: ${error.message}`,
         content: '<div style="padding: 20px; text-align: center; color: #ef4444;">Failed to generate visualization. Please try again.</div>'
       })
     };
