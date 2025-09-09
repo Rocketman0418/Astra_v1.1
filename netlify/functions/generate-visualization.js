@@ -1,4 +1,6 @@
 exports.handler = async (event, context) => {
+  console.log('Function started, method:', event.httpMethod);
+  
   // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return {
@@ -26,9 +28,11 @@ exports.handler = async (event, context) => {
   }
 
   try {
+    console.log('Parsing request body...');
     const { messageText } = JSON.parse(event.body);
     
     if (!messageText) {
+      console.log('No message text provided');
       return {
         statusCode: 400,
         headers: {
@@ -40,8 +44,10 @@ exports.handler = async (event, context) => {
     }
 
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    console.log('API key exists:', !!GEMINI_API_KEY);
     
     if (!GEMINI_API_KEY) {
+      console.log('Gemini API key not found in environment');
       return {
         statusCode: 500,
         headers: {
@@ -53,6 +59,7 @@ exports.handler = async (event, context) => {
     }
 
     const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    console.log('Making request to Gemini API...');
 
     const prompt = `Create a sophisticated, interactive HTML data visualization based on the following text. 
 
@@ -89,12 +96,12 @@ ${messageText}
 
 Create a visualization that would impress executives and stakeholders with its professional appearance and interactivity.`;
 
+    console.log('Sending request to Gemini...');
     const response = await fetch(GEMINI_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      timeout: 25000, // 25 second timeout
       body: JSON.stringify({
         contents: [{
           parts: [{
@@ -104,14 +111,18 @@ Create a visualization that would impress executives and stakeholders with its p
       })
     });
 
+    console.log('Gemini API response status:', response.status);
+    
     if (!response.ok) {
-      console.error('Gemini API error:', response.status, response.statusText);
+      console.error('Gemini API error:', response.status, response.statusText, await response.text());
       throw new Error('Failed to generate visualization');
     }
 
     const data = await response.json();
     const visualizationContent = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No visualization could be generated.';
 
+    console.log('Successfully generated visualization, length:', visualizationContent.length);
+    
     return {
       statusCode: 200,
       headers: {
@@ -122,7 +133,7 @@ Create a visualization that would impress executives and stakeholders with its p
     };
 
   } catch (error) {
-    console.error('Error generating visualization:', error.message, error.stack);
+    console.error('Function error:', error.message, error.stack);
     return {
       statusCode: 500,
       headers: {
