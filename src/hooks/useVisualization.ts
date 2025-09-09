@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { VisualizationState } from '../types';
 
-const GEMINI_API_KEY = 'AIzaSyCsZwYakYNFcOo37li73JGjXTtc0DYmdcQ';
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 export const useVisualization = () => {
