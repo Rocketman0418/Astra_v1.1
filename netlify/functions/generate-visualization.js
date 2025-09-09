@@ -61,26 +61,6 @@ exports.handler = async (event, context) => {
     const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
     console.log('Making request to Gemini API...');
 
-    const prompt = `Create a sophisticated, interactive HTML data visualization based on the following text. 
-
-DESIGN REQUIREMENTS:
-- Use a DARK THEME with these exact colors:
-  * Background: #111827 (dark gray)
-  * Secondary background: #1f2937 (lighter dark gray)
-  * Primary accent: #3b82f6 (blue)
-  * Secondary accent: #8b5cf6 (purple)
-  * Text: #ffffff (white)
-  * Muted text: #9ca3af (light gray)
-  * Success/positive: #10b981 (green)
-  * Warning/negative: #ef4444 (red)
-
-VISUALIZATION REQUIREMENTS:
-- Create dynamic, interactive charts using modern CSS and JavaScript
-- Include hover effects, animations, and micro-interactions
-- Return ONLY clean HTML with inline CSS and JavaScript
-${messageText}
-
-Create a visualization that would impress executives and stakeholders with its professional appearance and interactivity.`;
     const prompt = `You are a data visualization expert. Create a complete, working HTML page with inline CSS and JavaScript that visualizes the following data.
 
     console.log('Sending request to Gemini...');
@@ -158,6 +138,3 @@ Create a visualization that would impress executives and stakeholders with its p
       })
     };
   }
-};
-  }
-}
