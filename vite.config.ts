@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://your-netlify-site.netlify.app',
+        target: 'https://astracompanyagent.netlify.app',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '/.netlify/functions')
       }
