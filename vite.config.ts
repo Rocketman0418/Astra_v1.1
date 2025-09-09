@@ -17,8 +17,8 @@ export default defineConfig(({ mode }) => {
         configure: (proxy, options) => {
           proxy.on('proxyReq', (proxyReq, req, res) => {
             // Add the API key to the request headers for local development
-            if (env.GEMINI_API_KEY) {
-              proxyReq.setHeader('x-gemini-api-key', env.GEMINI_API_KEY);
+            if (env.VITE_GEMINI_API_KEY) {
+              proxyReq.setHeader('x-gemini-api-key', env.VITE_GEMINI_API_KEY);
             }
           });
         }
