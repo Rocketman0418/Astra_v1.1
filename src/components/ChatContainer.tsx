@@ -48,7 +48,7 @@ export const ChatContainer: React.FC = () => {
     <div className="flex flex-col h-screen bg-gray-900">
       <Header />
       
-      <div className="flex-1 overflow-y-auto pt-20 pb-24 px-4">
+      <div className="flex-1 overflow-y-auto pt-16 pb-20 px-3 md:pt-20 md:pb-24 md:px-4">
         <div className="max-w-4xl mx-auto">
           {messages.map((message) => (
             <MessageBubble
