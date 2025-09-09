@@ -16,8 +16,9 @@ export default defineConfig(({ mode }) => {
         rewrite: (path) => path.replace(/^\/api/, '/.netlify/functions'),
         configure: (proxy, options) => {
           proxy.on('proxyReq', (proxyReq, req, res) => {
-            // Add the API key to the request headers for local development
-            if (env.VITE_GEMINI_API_KEY) {
+              const apiKey = env.VITE_GEMINI_API_KEY || env.GEMINI_API_KEY;
+              if (apiKey) {
+                proxyReq.setHeader('x-gemini-api-key', apiKey);
               proxyReq.setHeader('x-gemini-api-key', env.VITE_GEMINI_API_KEY);
             }
           });

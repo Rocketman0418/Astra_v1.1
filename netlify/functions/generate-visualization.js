@@ -46,9 +46,10 @@ exports.handler = async (event, context) => {
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     
     // For local development through Vite proxy, check headers
-    const apiKey = GEMINI_API_KEY || event.headers['x-gemini-api-key'];
+    const apiKey = GEMINI_API_KEY || event.headers['x-gemini-api-key'] || process.env.VITE_GEMINI_API_KEY;
     
-    console.log('API key exists:', !!GEMINI_API_KEY);
+    console.log('API key exists:', !!apiKey);
+    console.log('API key source:', GEMINI_API_KEY ? 'GEMINI_API_KEY' : event.headers['x-gemini-api-key'] ? 'header' : process.env.VITE_GEMINI_API_KEY ? 'VITE_GEMINI_API_KEY' : 'none');
     
     if (!apiKey) {
       console.log('Gemini API key not found in environment');
