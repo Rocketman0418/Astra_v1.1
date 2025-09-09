@@ -1,0 +1,124 @@
+exports.handler = async (event, context) => {
+  // Only allow POST requests
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+      },
+      body: JSON.stringify({ error: 'Method not allowed' })
+    };
+  }
+
+  // Handle CORS preflight
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+      },
+      body: ''
+    };
+  }
+
+  try {
+    const { messageText } = JSON.parse(event.body);
+    
+    if (!messageText) {
+      return {
+        statusCode: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ error: 'Message text is required' })
+      };
+    }
+
+    const GEMINI_API_KEY = process.env.VITE_GEMINI_API_KEY;
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+    const prompt = `Create a sophisticated, interactive HTML data visualization based on the following text. 
+
+DESIGN REQUIREMENTS:
+- Use a DARK THEME with these exact colors:
+  * Background: #111827 (dark gray)
+  * Secondary background: #1f2937 (lighter dark gray)
+  * Primary accent: #3b82f6 (blue)
+  * Secondary accent: #8b5cf6 (purple)
+  * Text: #ffffff (white)
+  * Muted text: #9ca3af (light gray)
+  * Success/positive: #10b981 (green)
+  * Warning/negative: #ef4444 (red)
+
+VISUALIZATION REQUIREMENTS:
+- Create dynamic, interactive charts using modern CSS and JavaScript
+- Include hover effects, animations, and micro-interactions
+- Use gradients from blue to purple for primary elements
+- Implement responsive design that works on all screen sizes
+- Add smooth transitions and professional styling
+- Include data labels, legends, and clear visual hierarchy
+- Use modern CSS features like flexbox, grid, and custom properties
+- Make it visually striking and dashboard-quality
+
+TECHNICAL REQUIREMENTS:
+- Return ONLY clean HTML with inline CSS and JavaScript
+- No external dependencies or libraries
+- Use semantic HTML structure
+- Ensure accessibility with proper ARIA labels
+- Optimize for performance and smooth animations
+
+DATA TO VISUALIZE:
+${messageText}
+
+Create a visualization that would impress executives and stakeholders with its professional appearance and interactivity.`;
+
+    const response = await fetch(GEMINI_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }]
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to generate visualization');
+    }
+
+    const data = await response.json();
+    const visualizationContent = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No visualization could be generated.';
+
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ content: visualizationContent })
+    };
+
+  } catch (error) {
+    console.error('Error generating visualization:', error);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        error: 'Failed to generate visualization',
+        content: '<div style="padding: 20px; text-align: center; color: #ef4444;">Failed to generate visualization. Please try again.</div>'
+      })
+    };
+  }
+};
